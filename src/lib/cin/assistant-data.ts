@@ -38,10 +38,22 @@ export const FAQ_ECIN: EntreeFAQ[] = [
       "Un dossier est signalé incomplet lorsqu'une pièce obligatoire n'a pas été téléversée ou qu'un document n'a pas pu être lu correctement. Consultez la page de suivi de votre dossier : les pièces manquantes ou à corriger y sont indiquées.",
   },
   {
-    motsClefs: ["rendez-vous", "rdv", "apporter", "biometrie", "biométrie"],
+    motsClefs: ["rendez-vous", "rdv", "apporter"],
     question: "Que dois-je apporter à mon rendez-vous ?",
     reponse:
-      "Apportez une pièce d'identité valide, la convocation ou le QR code de votre dossier, ainsi que vos 3 photos d'identité physiques. L'enrôlement biométrique (empreintes, photo officielle) est réalisé sur place par l'administration.",
+      "Apportez une pièce d'identité valide, la convocation ou le QR code de votre dossier, ainsi que vos 3 photos d'identité physiques. Sur place, l'administration réalise la photo biométrique officielle, prend vos empreintes digitales et effectue la capture de l'iris — e-CIN ne demande jamais ces éléments à distance.",
+  },
+  {
+    motsClefs: ["biometrie", "biométrie", "empreinte", "iris", "oeil", "œil"],
+    question: "Comment se déroule la biométrie ?",
+    reponse:
+      "La biométrie (photo officielle, empreintes digitales, capture de l'iris) est réalisée exclusivement en personne, au centre, avec les équipements officiels de l'administration. e-CIN ne vous demandera jamais de photographier votre œil, de transmettre une empreinte ou d'effectuer une reconnaissance d'iris depuis votre téléphone.",
+  },
+  {
+    motsClefs: ["age", "âge", "18 ans", "mineur"],
+    question: "Y a-t-il une condition d'âge ?",
+    reponse:
+      "Oui, cette plateforme est destinée aux personnes âgées de 18 ans ou plus. L'âge est vérifié automatiquement à partir de votre date de naissance dès la première étape de votre demande.",
   },
   {
     motsClefs: ["delai", "délai", "combien de temps", "attendre"],

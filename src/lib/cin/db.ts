@@ -10,6 +10,15 @@ const CLE_DOSSIERS = "ecin_dossiers_v1";
 const CLE_PIECES = "ecin_pieces_v1";
 const CLE_TENTATIVES = "ecin_tentatives_registre_v1"; // protection anti-devinette
 const CLE_SEED = "ecin_seed_v1";
+const CLE_PARAMETRES = "ecin_parametres_v1";
+
+export interface ParametresAdministratifs {
+  ageMinimum: number;
+}
+
+const PARAMETRES_PAR_DEFAUT: ParametresAdministratifs = {
+  ageMinimum: 18,
+};
 
 function lireJSON<T>(cle: string, valeurParDefaut: T): T {
   if (typeof window === "undefined") return valeurParDefaut;
@@ -88,6 +97,15 @@ export const cinDb = {
 
   enregistrerPiecesRequises(pieces: PieceRequise[]): void {
     ecrireJSON(CLE_PIECES, pieces);
+  },
+
+  // --- Paramètres administratifs (modifiables sans toucher au code) --
+  obtenirParametres(): ParametresAdministratifs {
+    return lireJSON<ParametresAdministratifs>(CLE_PARAMETRES, PARAMETRES_PAR_DEFAUT);
+  },
+
+  enregistrerParametres(parametres: ParametresAdministratifs): void {
+    ecrireJSON(CLE_PARAMETRES, parametres);
   },
 
   // --- Protection anti-devinette pour la vérification registre -------

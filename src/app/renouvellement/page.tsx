@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import UploadBox from "@/components/UploadBox";
 import { simulerControlePhoto, simulerOCRAncienneCIN } from "@/lib/cin/ocr-sim";
-import { verifierAvecRegistre, ResultatVerification } from "@/lib/cin/registre-fictif";
+import { verifierAvecRegistre, ResultatVerification, obtenirEntreeRegistre } from "@/lib/cin/registre-fictif";
 import { cinDb } from "@/lib/cin/db";
 import { ResultatControlePhoto, ResultatOCR } from "@/lib/cin/types";
+import { calculerAge } from "@/lib/cin/age";
 
 const ETAPES = ["Ancienne carte", "Photo", "Vérification familiale", "Confirmation"];
 const MAX_TENTATIVES = 3;
@@ -28,6 +29,9 @@ export default function Renouvellement() {
   const [resultat, setResultat] = useState<ResultatVerification | null>(null);
   const [tentatives, setTentatives] = useState(0);
   const [verrouille, setVerrouille] = useState(false);
+  const [ageInsuffisant, setAgeInsuffisant] = useState(false);
+
+  const ageMinimum = cinDb.obtenirParametres().ageMinimum;
 
   const [envoye, setEnvoye] = useState(false);
   const [reference, setReference] = useState("");
@@ -66,9 +70,19 @@ export default function Renouvellement() {
     const apres = cinDb.enregistrerTentative(cle, echec);
     setTentatives(apres.nombre);
     if (apres.verrouilleJusqua) setVerrouille(true);
+
+    // Condition d'âge revérifiée avec le registre fictif lorsque la donnée est disponible.
+    if (r === "confirmee") {
+      const entree = obtenirEntreeRegistre(numeroCin);
+      const age = entree ? calculerAge(entree.dateNaissance) : null;
+      setAgeInsuffisant(age !== null && age < ageMinimum);
+    } else {
+      setAgeInsuffisant(false);
+    }
   }
 
   function transmettre() {
+    if (ageInsuffisant) return;
     const dossier = cinDb.creerDossier({
       type: "renouvellement",
       citoyen: {
@@ -282,6 +296,12 @@ export default function Renouvellement() {
                     🔎 Vérification manuelle nécessaire. Votre dossier sera examiné par un agent.
                   </p>
                 )}
+                {ageInsuffisant && (
+                  <p className="mt-4 rounded-md bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
+                    Vous devez avoir au moins {ageMinimum} ans pour effectuer cette demande de Carte
+                    d&apos;Identité Nationale.
+                  </p>
+                )}
               </>
             )}
           </section>
@@ -317,7 +337,9 @@ export default function Renouvellement() {
               disabled={
                 (etape === 0 && !ancienneCinFichier) ||
                 (etape === 1 && controlePhoto?.statut !== "acceptee") ||
-                (etape === 2 && resultat !== "confirmee" && resultat !== "verification_manuelle")
+                (etape === 2 &&
+                  (ageInsuffisant ||
+                    (resultat !== "confirmee" && resultat !== "verification_manuelle")))
               }
               className="rounded-md bg-[var(--navy)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--navy-strong)] disabled:opacity-40"
             >
@@ -329,7 +351,8 @@ export default function Renouvellement() {
                 const coche = (document.getElementById("confirmation") as HTMLInputElement)?.checked;
                 if (coche) transmettre();
               }}
-              className="rounded-md bg-[var(--green)] px-5 py-2.5 text-sm font-medium text-white hover:opacity-90"
+              disabled={ageInsuffisant}
+              className="rounded-md bg-[var(--green)] px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-40"
             >
               Transmettre ma demande
             </button>

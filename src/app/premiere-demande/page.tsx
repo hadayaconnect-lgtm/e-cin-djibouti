@@ -8,6 +8,7 @@ import { piecesPourCas } from "@/lib/cin/pieces";
 import { simulerControlePhoto } from "@/lib/cin/ocr-sim";
 import { cinDb } from "@/lib/cin/db";
 import { DocumentTeleverse, ResultatControlePhoto } from "@/lib/cin/types";
+import { calculerAge } from "@/lib/cin/age";
 
 const ETAPES = ["Identité", "Situation", "Documents", "Vérification", "Transmission"];
 
@@ -17,6 +18,12 @@ export default function PremiereDemande() {
 
   const [identite, setIdentite] = useState({ nom: "", prenom: "", dateNaissance: "" });
   const [domicileConnu, setDomicileConnu] = useState<"oui" | "non" | "">("");
+
+  const ageMinimum = useMemo(() => cinDb.obtenirParametres().ageMinimum, []);
+  const age = calculerAge(identite.dateNaissance);
+  const ageSaisi = identite.dateNaissance !== "" && age !== null;
+  const ageValide = ageSaisi && age !== null && age >= ageMinimum;
+  const ageInsuffisant = ageSaisi && age !== null && age < ageMinimum;
 
   const pieces = useMemo(() => piecesPourCas("premiere"), []);
   const [documents, setDocuments] = useState<Record<string, DocumentTeleverse>>({});
@@ -43,6 +50,9 @@ export default function PremiereDemande() {
   const photoOk = controlePhoto?.statut === "acceptee";
 
   function transmettre() {
+    // Garde-fou : la condition d'âge est revérifiée avant toute transmission,
+    // indépendamment de la navigation entre les étapes du formulaire.
+    if (!ageValide) return;
     const dossier = cinDb.creerDossier({
       type: "premiere",
       citoyen: identite,
@@ -109,6 +119,18 @@ export default function PremiereDemande() {
                 onChange={(v) => setIdentite((i) => ({ ...i, dateNaissance: v }))}
               />
             </div>
+
+            {ageValide && (
+              <p className="mt-4 rounded-md bg-[var(--green-soft)] px-3 py-2 text-sm text-[var(--green)]">
+                ✅ Vous remplissez la condition d&apos;âge pour poursuivre votre demande.
+              </p>
+            )}
+            {ageInsuffisant && (
+              <p className="mt-4 rounded-md bg-[var(--red-soft)] px-3 py-2 text-sm text-[var(--red)]">
+                Vous devez avoir au moins {ageMinimum} ans pour effectuer cette demande de Carte
+                d&apos;Identité Nationale.
+              </p>
+            )}
           </section>
         )}
 
@@ -243,7 +265,10 @@ export default function PremiereDemande() {
           {etape < ETAPES.length - 1 ? (
             <button
               onClick={() => setEtape((e) => Math.min(ETAPES.length - 1, e + 1))}
-              disabled={etape === 3 && (!documentsObligatoiresOk || !photoOk)}
+              disabled={
+                (etape === 0 && !ageValide) ||
+                (etape === 3 && (!documentsObligatoiresOk || !photoOk))
+              }
               className="rounded-md bg-[var(--navy)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--navy-strong)] disabled:opacity-40"
             >
               Continuer
@@ -254,7 +279,8 @@ export default function PremiereDemande() {
                 const coche = (document.getElementById("confirmation") as HTMLInputElement)?.checked;
                 if (coche) transmettre();
               }}
-              className="rounded-md bg-[var(--green)] px-5 py-2.5 text-sm font-medium text-white hover:opacity-90"
+              disabled={!ageValide}
+              className="rounded-md bg-[var(--green)] px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-40"
             >
               Transmettre ma demande
             </button>

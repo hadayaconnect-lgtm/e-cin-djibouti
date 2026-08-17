@@ -5,7 +5,7 @@ const ETAPES: { statut: StatutDossier; libelle: string }[] = [
   { statut: "verification", libelle: "Vérification administrative" },
   { statut: "pre_validee", libelle: "Pré-validée" },
   { statut: "rdv_planifie", libelle: "Rendez-vous biométrique" },
-  { statut: "biometrie_effectuee", libelle: "Biométrie effectuée" },
+  { statut: "biometrie_effectuee", libelle: "Photo, empreintes et iris effectués" },
   { statut: "en_production", libelle: "CIN en production" },
   { statut: "disponible", libelle: "CIN disponible" },
 ];

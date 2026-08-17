@@ -158,7 +158,9 @@ function SuiviContenu() {
                 </div>
                 <p className="mt-3 text-xs text-[var(--ink-soft)]">
                   Présentez ce code à l&apos;accueil. Apportez vos 3 photos physiques et une pièce
-                  d&apos;identité.
+                  d&apos;identité. Sur place, l&apos;administration procède à la photo biométrique
+                  officielle, à la prise d&apos;empreintes digitales et à la capture de l&apos;iris —
+                  aucune de ces données n&apos;est collectée avant votre venue.
                 </p>
               </div>
             )}

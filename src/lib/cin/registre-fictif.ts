@@ -79,3 +79,8 @@ export function verifierAvecRegistre(params: {
 }
 
 export const NUMEROS_CIN_DEMO = REGISTRE_FICTIF.map((e) => e.numeroCin);
+
+/** Retrouve la fiche du registre fictif correspondant à un numéro de CIN, si elle existe. */
+export function obtenirEntreeRegistre(numeroCin: string): EntreeRegistre | undefined {
+  return REGISTRE_FICTIF.find((e) => normaliser(e.numeroCin) === normaliser(numeroCin));
+}

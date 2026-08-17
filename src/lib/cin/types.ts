@@ -21,7 +21,7 @@ export const LIBELLES_STATUT: Record<StatutDossier, string> = {
   anomalie_verification_manuelle: "Vérification manuelle nécessaire",
   pre_validee: "Pré-validée",
   rdv_planifie: "Rendez-vous biométrique planifié",
-  biometrie_effectuee: "Biométrie effectuée",
+  biometrie_effectuee: "Photo, empreintes et iris effectués",
   en_production: "CIN en production",
   disponible: "CIN disponible",
   rejetee: "Rejetée",

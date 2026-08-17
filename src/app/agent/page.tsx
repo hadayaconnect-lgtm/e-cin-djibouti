@@ -47,9 +47,14 @@ export default function EspaceAgent() {
       <div className="mx-auto max-w-6xl px-5 py-10">
         <div className="flex items-center justify-between">
           <h1 className="font-display text-2xl text-[var(--navy)]">Tableau de bord</h1>
-          <span className="font-mono-data text-xs text-[var(--ink-soft)]">
-            {dossiers.length} dossier(s)
-          </span>
+          <div className="flex items-center gap-4">
+            <Link href="/agent/parametres" className="text-xs text-[var(--navy)] hover:underline">
+              Paramètres
+            </Link>
+            <span className="font-mono-data text-xs text-[var(--ink-soft)]">
+              {dossiers.length} dossier(s)
+            </span>
+          </div>
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2">

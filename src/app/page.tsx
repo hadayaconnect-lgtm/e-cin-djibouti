@@ -34,7 +34,12 @@ const ETAPES = [
   { titre: "Depuis chez vous", texte: "Renseignez vos informations et téléversez vos documents." },
   { titre: "Contrôles intelligents", texte: "L'OCR et les vérifications automatiques préparent votre dossier." },
   { titre: "Vérification administrative", texte: "Un agent habilité examine et pré-valide votre dossier." },
-  { titre: "Rendez-vous", texte: "Vous vous déplacez uniquement pour la biométrie, déjà planifiée." },
+  { titre: "Rendez-vous", texte: "Vous choisissez le centre, la date et le créneau une fois pré-validé." },
+  {
+    titre: "Présence physique",
+    texte: "Au centre, l'administration réalise la photo biométrique, les empreintes et la capture de l'iris.",
+  },
+  { titre: "Production de la CIN", texte: "Après validation administrative, votre carte est produite." },
 ];
 
 export default function Accueil() {
@@ -77,7 +82,7 @@ export default function Accueil() {
       <section className="border-y border-[var(--line)] bg-[var(--panel)]">
         <div className="mx-auto max-w-5xl px-5 py-14">
           <h2 className="font-display text-2xl text-[var(--navy)]">Comment ça marche</h2>
-          <div className="mt-8 grid gap-8 sm:grid-cols-4">
+          <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {ETAPES.map((e, i) => (
               <div key={e.titre}>
                 <div className="mb-3 flex items-center gap-2">
@@ -102,9 +107,12 @@ export default function Accueil() {
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--ink-soft)]">
             Les contrôles automatiques et l&apos;intelligence artificielle assistent la préparation de
-            votre dossier — ils ne prennent jamais seuls une décision administrative défavorable. La
-            photographie et les données biométriques officielles continuent d&apos;être réalisées par
-            l&apos;administration lors de votre rendez-vous.
+            votre dossier — ils ne prennent jamais seuls une décision administrative défavorable.
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--ink-soft)]">
+            e-CIN ne collecte aucune donnée biométrique à domicile. La photo biométrique officielle, les
+            empreintes digitales et la capture de l&apos;iris sont exclusivement réalisées en personne,
+            au centre, avec les équipements officiels existants de l&apos;administration.
           </p>
         </div>
       </section>

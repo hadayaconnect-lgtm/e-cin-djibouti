@@ -98,5 +98,9 @@ export function amorcerDonneesDemo(): void {
     "Identité du document de perte différente du demandeur (scénario F)"
   );
 
+  // Cas G — Mineur : demande bloquée avant transmission (illustratif, aucun dossier
+  // n'est réellement créé pour un mineur — ce cas est documenté pour la démonstration
+  // uniquement, la vérification ayant lieu côté citoyen avant toute transmission).
+
   cinDb.marquerAmorce();
 }
