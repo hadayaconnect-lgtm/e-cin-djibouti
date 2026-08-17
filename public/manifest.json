@@ -1,0 +1,12 @@
+{
+  "name": "e-CIN Djibouti",
+  "short_name": "e-CIN",
+  "description": "Plateforme de pré-demande de Carte d'Identité Nationale — République de Djibouti",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#0b3a52",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }
+  ]
+}

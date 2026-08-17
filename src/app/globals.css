@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Palette — sobre, institutionnelle, inspirée des couleurs nationales sans les surexposer */
+  --ink: #16212e;          /* texte principal */
+  --ink-soft: #4d5b6b;     /* texte secondaire */
+  --paper: #f6f4ef;        /* fond général, papier officiel */
+  --panel: #ffffff;        /* cartes / panneaux */
+  --line: #dfe2e2;         /* bordures */
+  --navy: #0b3a52;         /* bleu institutionnel profond — primaire */
+  --navy-strong: #082a3c;
+  --sky: #4f9bc7;          /* bleu drapeau, accents clairs */
+  --green: #1c7a45;        /* vert drapeau — validation */
+  --green-soft: #e6f2ea;
+  --red: #b5262c;          /* rouge de l'étoile — alerte uniquement */
+  --red-soft: #f8e9e9;
+  --amber: #9a6b12;
+  --amber-soft: #f8f0dd;
+  --gold-seal: #a9812f;    /* tampon / sceau */
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: "Fraunces", Georgia, serif;
+}
+
+.font-mono-data {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.garde-tete {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--sky) 0px,
+    var(--sky) 18px,
+    transparent 18px,
+    transparent 22px,
+    var(--green) 22px,
+    var(--green) 40px,
+    transparent 40px,
+    transparent 44px,
+    var(--red) 44px,
+    var(--red) 62px,
+    transparent 62px,
+    transparent 66px
+  );
+  height: 4px;
+  opacity: 0.55;
+}
+
+.sceau {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--gold-seal);
+  border-radius: 999px;
+  color: var(--gold-seal);
+  transform: rotate(-6deg);
+}
