@@ -43,7 +43,7 @@ function SuiviContenu() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Suivi de la demande" />
       <div className="mx-auto max-w-2xl px-5 py-10">
         <h1 className="font-display text-2xl text-[var(--navy)]">Suivre ma demande</h1>

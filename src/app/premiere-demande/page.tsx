@@ -8,7 +8,9 @@ import { piecesPourCas } from "@/lib/cin/pieces";
 import { simulerControlePhoto } from "@/lib/cin/ocr-sim";
 import { cinDb } from "@/lib/cin/db";
 import { DocumentTeleverse, ResultatControlePhoto } from "@/lib/cin/types";
-import { calculerAge } from "@/lib/cin/age";
+import { calculerAge, dateLimitePourAge } from "@/lib/cin/age";
+import { formaterDateFr } from "@/lib/cin/date-fr";
+import DateNaissancePicker from "@/components/DateNaissancePicker";
 
 const ETAPES = ["Identité", "Situation", "Documents", "Vérification", "Transmission"];
 
@@ -17,7 +19,6 @@ export default function PremiereDemande() {
   const [etape, setEtape] = useState(0);
 
   const [identite, setIdentite] = useState({ nom: "", prenom: "", dateNaissance: "" });
-  const [domicileConnu, setDomicileConnu] = useState<"oui" | "non" | "">("");
 
   const ageMinimum = useMemo(() => cinDb.obtenirParametres().ageMinimum, []);
   const age = calculerAge(identite.dateNaissance);
@@ -67,7 +68,7 @@ export default function PremiereDemande() {
 
   if (envoye) {
     return (
-      <main className="min-h-screen bg-[var(--paper)]">
+      <main className="min-h-screen">
         <Header contexte="Première demande" />
         <div className="mx-auto max-w-2xl px-5 py-16 text-center">
           <span className="sceau mx-auto h-14 w-14 font-display text-base font-semibold">✓</span>
@@ -89,7 +90,7 @@ export default function PremiereDemande() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Première demande" />
       <div className="mx-auto max-w-2xl px-5 py-10">
         <ol className="mb-8 flex flex-wrap gap-x-4 gap-y-2 text-xs">
@@ -112,11 +113,11 @@ export default function PremiereDemande() {
             <div className="mt-6 space-y-4">
               <Champ label="Nom" valeur={identite.nom} onChange={(v) => setIdentite((i) => ({ ...i, nom: v }))} />
               <Champ label="Prénom" valeur={identite.prenom} onChange={(v) => setIdentite((i) => ({ ...i, prenom: v }))} />
-              <Champ
+              <DateNaissancePicker
                 label="Date de naissance"
-                type="date"
                 valeur={identite.dateNaissance}
                 onChange={(v) => setIdentite((i) => ({ ...i, dateNaissance: v }))}
+                dateMax={dateLimitePourAge(ageMinimum)}
               />
             </div>
 
@@ -138,34 +139,14 @@ export default function PremiereDemande() {
           <section>
             <h1 className="font-display text-2xl text-[var(--navy)]">Votre situation</h1>
             <p className="mt-2 text-sm text-[var(--ink-soft)]">
-              Ces réponses permettent de déterminer précisément les pièces à fournir pour votre cas.
+              Votre demande correspond à une première Carte d&apos;Identité Nationale. Les pièces
+              exactes à fournir pour ce cas, dont votre justificatif de domicile, vous seront demandées
+              à l&apos;étape suivante.
             </p>
-            <fieldset className="mt-6">
-              <legend className="mb-2 text-sm font-medium text-[var(--ink)]">
-                Disposez-vous d&apos;un justificatif de domicile récent ?
-              </legend>
-              <div className="flex gap-3">
-                {(["oui", "non"] as const).map((v) => (
-                  <button
-                    key={v}
-                    onClick={() => setDomicileConnu(v)}
-                    className={`rounded-md border px-4 py-2 text-sm capitalize ${
-                      domicileConnu === v
-                        ? "border-[var(--navy)] bg-[var(--navy)] text-white"
-                        : "border-[var(--line)] bg-[var(--panel)] text-[var(--ink)]"
-                    }`}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-              {domicileConnu === "non" && (
-                <p className="mt-3 rounded-md bg-[var(--amber-soft)] px-3 py-2 text-xs text-[var(--amber)]">
-                  Cette information doit être confirmée auprès du service compétent : rapprochez-vous de
-                  votre chef de quartier ou de la mairie pour obtenir un justificatif.
-                </p>
-              )}
-            </fieldset>
+            <div className="mt-6 rounded-md border border-[var(--line)] bg-[var(--panel)] p-4 text-sm text-[var(--ink-soft)]">
+              Aucune information supplémentaire n&apos;est nécessaire à cette étape — cliquez sur
+              « Continuer » pour passer au téléversement de vos documents.
+            </div>
           </section>
         )}
 
@@ -218,17 +199,25 @@ export default function PremiereDemande() {
             <dl className="mt-6 divide-y divide-[var(--line)] rounded-md border border-[var(--line)] bg-[var(--panel)]">
               <Ligne label="Nom">{identite.nom || "—"}</Ligne>
               <Ligne label="Prénom">{identite.prenom || "—"}</Ligne>
-              <Ligne label="Date de naissance">{identite.dateNaissance || "—"}</Ligne>
+              <Ligne label="Date de naissance">{formaterDateFr(identite.dateNaissance) || "—"}</Ligne>
               {pieces.map((p) => (
                 <Ligne key={p.id} label={p.libelle}>
-                  {documents[p.id] ? `✓ ${documents[p.id].nomFichier}` : "Non fourni"}
+                  {documents[p.id] ? "Fourni" : "Non fourni"}
                 </Ligne>
               ))}
             </dl>
             {!documentsObligatoiresOk && (
-              <p className="mt-3 text-xs text-[var(--red)]">
-                Certaines pièces obligatoires sont manquantes. Revenez à l&apos;étape précédente.
-              </p>
+              <div className="mt-3">
+                <p className="text-xs text-[var(--red)]">
+                  Certaines pièces obligatoires sont manquantes.
+                </p>
+                <button
+                  onClick={() => setEtape(2)}
+                  className="mt-1 text-xs font-medium text-[var(--navy)] hover:underline"
+                >
+                  ← Corriger mes documents
+                </button>
+              </div>
             )}
             {controlePhoto && !photoOk && (
               <p className="mt-3 text-xs text-[var(--red)]">

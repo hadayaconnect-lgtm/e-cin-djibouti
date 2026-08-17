@@ -42,7 +42,7 @@ export default function EspaceAgent() {
   const affiches = filtre === "tous" ? dossiers : dossiers.filter((d) => d.statut === filtre);
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Espace agent" />
       <div className="mx-auto max-w-6xl px-5 py-10">
         <div className="flex items-center justify-between">

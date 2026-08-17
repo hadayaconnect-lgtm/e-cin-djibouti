@@ -13,3 +13,12 @@ export function calculerAge(dateNaissanceISO: string | undefined | null): number
   }
   return age;
 }
+
+// Dérive la date de naissance limite (au format ISO yyyy-mm-dd) correspondant à un âge
+// minimum donné. Sert uniquement à borner la sélection dans le calendrier — la logique
+// de calcul d'âge elle-même reste centralisée dans calculerAge() ci-dessus.
+export function dateLimitePourAge(ageMinimum: number): string {
+  const limite = new Date();
+  limite.setFullYear(limite.getFullYear() - ageMinimum);
+  return limite.toISOString().slice(0, 10);
+}

@@ -56,7 +56,7 @@ export default function DetailDossierAgent() {
   if (dossier === undefined) return null;
   if (dossier === null) {
     return (
-      <main className="min-h-screen bg-[var(--paper)]">
+      <main className="min-h-screen">
         <Header contexte="Espace agent" />
         <div className="mx-auto max-w-2xl px-5 py-16 text-center text-[var(--ink-soft)]">
           Dossier introuvable.
@@ -66,7 +66,7 @@ export default function DetailDossierAgent() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Espace agent" />
       <div className="mx-auto max-w-3xl px-5 py-10">
         <button onClick={() => router.push("/agent")} className="mb-4 text-xs text-[var(--ink-soft)] hover:underline">

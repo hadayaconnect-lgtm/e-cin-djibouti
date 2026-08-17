@@ -20,7 +20,7 @@ export default function ParametresAgent() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Paramètres administratifs" />
       <div className="mx-auto max-w-xl px-5 py-10">
         <Link href="/agent" className="mb-4 block text-xs text-[var(--ink-soft)] hover:underline">

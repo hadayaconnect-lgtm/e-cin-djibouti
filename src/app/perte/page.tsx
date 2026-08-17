@@ -7,6 +7,7 @@ import UploadBox from "@/components/UploadBox";
 import { simulerOCRDeclarationPerte } from "@/lib/cin/ocr-sim";
 import { cinDb } from "@/lib/cin/db";
 import { ResultatOCR } from "@/lib/cin/types";
+import DateNaissancePicker from "@/components/DateNaissancePicker";
 
 export default function Perte() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function Perte() {
 
   if (envoye) {
     return (
-      <main className="min-h-screen bg-[var(--paper)]">
+      <main className="min-h-screen">
         <Header contexte="Remplacement après perte" />
         <div className="mx-auto max-w-2xl px-5 py-16 text-center">
           <span className="sceau mx-auto h-14 w-14 font-display text-base font-semibold">✓</span>
@@ -71,7 +72,7 @@ export default function Perte() {
 
   if (!declarationFaite) {
     return (
-      <main className="min-h-screen bg-[var(--paper)]">
+      <main className="min-h-screen">
         <Header contexte="Remplacement après perte" />
         <div className="mx-auto max-w-xl px-5 py-16">
           <h1 className="font-display text-2xl text-[var(--navy)]">Carte perdue ou volée</h1>
@@ -92,16 +93,15 @@ export default function Perte() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Remplacement après perte" />
       <div className="mx-auto max-w-xl px-5 py-10">
         <h1 className="font-display text-2xl text-[var(--navy)]">Votre déclaration</h1>
         <div className="mt-6 space-y-4">
           <Champ label="Nom" valeur={identite.nom} onChange={(v) => setIdentite((i) => ({ ...i, nom: v }))} />
           <Champ label="Prénom" valeur={identite.prenom} onChange={(v) => setIdentite((i) => ({ ...i, prenom: v }))} />
-          <Champ
+          <DateNaissancePicker
             label="Date de naissance"
-            type="date"
             valeur={identite.dateNaissance}
             onChange={(v) => setIdentite((i) => ({ ...i, dateNaissance: v }))}
           />

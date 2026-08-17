@@ -44,7 +44,7 @@ const ETAPES = [
 
 export default function Accueil() {
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header />
 
       <section className="mx-auto max-w-5xl px-5 pb-14 pt-16 sm:pt-20">

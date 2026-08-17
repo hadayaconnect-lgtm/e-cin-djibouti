@@ -128,7 +128,7 @@ export default function Renouvellement() {
 
   if (envoye) {
     return (
-      <main className="min-h-screen bg-[var(--paper)]">
+      <main className="min-h-screen">
         <Header contexte="Renouvellement" />
         <div className="mx-auto max-w-2xl px-5 py-16 text-center">
           <span className="sceau mx-auto h-14 w-14 font-display text-base font-semibold">✓</span>
@@ -146,7 +146,7 @@ export default function Renouvellement() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--paper)]">
+    <main className="min-h-screen">
       <Header contexte="Renouvellement" />
       <div className="mx-auto max-w-2xl px-5 py-10">
         <ol className="mb-8 flex flex-wrap gap-x-4 gap-y-2 text-xs">

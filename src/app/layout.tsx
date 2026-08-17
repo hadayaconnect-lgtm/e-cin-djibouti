@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import AssistantWidget from "@/components/AssistantWidget";
+import ArrierePlanNational from "@/components/ArrierePlanNational";
 
 // Les polices sont chargées via Google Fonts en <link> (et non next/font/google) :
 // le bac à sable de génération n'a pas accès à fonts.googleapis.com au moment du
@@ -33,6 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <ArrierePlanNational />
         {children}
         <AssistantWidget />
       </body>

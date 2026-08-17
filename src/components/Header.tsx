@@ -27,6 +27,16 @@ export default function Header({ contexte }: { contexte?: string }) {
           </span>
         )}
       </div>
+      {contexte && (
+        <div className="border-t border-[var(--line)] px-5 py-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-xs font-medium text-[var(--ink-soft)] hover:text-[var(--navy)]"
+          >
+            ← Retour à l&apos;accueil
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
